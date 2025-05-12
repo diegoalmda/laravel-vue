@@ -4,21 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
+use Illuminate\Support\Facades\Redirect;
+
 
 class PostController extends Controller
 {
-    public function store(StorePostRequest $request): JsonResponse
+    public function store(StorePostRequest $request): RedirectResponse
     {
         Gate::authorize('create', Post::class);
 
         $post = $request->user()->posts()->create($request->validated());
 
-        return response()->json($post, 201);
+        return Redirect::route('posts.index')->with('success', 'Post criado com sucesso!');
     }
 
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): Response
     {
         $request->validate([
             'user_id' => 'sometimes|integer|exists:users,id'
@@ -30,6 +35,15 @@ class PostController extends Controller
             ->latest()
             ->get();
 
-        return response()->json($posts);
+            return Inertia::render('Posts/Index', [
+                'posts' => $posts,
+            ]);
+    }
+
+    public function create(Request $request)
+    {
+        Gate::authorize('create', Post::class);
+
+        return Inertia::render('Posts/Create');
     }
 }
