@@ -39,6 +39,19 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    :href="route('posts.index')"
+                                    :active="route().current('posts.index')"
+                                >
+                                    Posts
+                                </NavLink>
+                                <NavLink
+                                    v-if="$page.props.auth.user.is_admin"
+                                    :href="route('posts.create')"
+                                    :active="route().current('posts.create')"
+                                >
+                                    Criar post
+                                </NavLink>
                             </div>
                         </div>
 
@@ -145,6 +158,19 @@ const showingNavigationDropdown = ref(false);
                             :active="route().current('dashboard')"
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('posts.index')"
+                            :active="route().current('posts.index')"
+                        >
+                            Posts
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            v-if="$page.props.auth.user.is_admin"
+                            :href="route('posts.create')"
+                            :active="route().current('posts.create')"
+                        >
+                            Criar post
                         </ResponsiveNavLink>
                     </div>
 
