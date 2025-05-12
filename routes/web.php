@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PostController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,7 +26,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Post's routes
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-    Route::post('/posts', [PostController::class, 'store'])->middleware('can:create,App\Models\Post')->name('posts.store');
+    Route::get('/posts/create', [PostController::class, 'create'])->middleware('can:create,App\Models\Post')->name('posts.create');
+    Route::post('/posts/store', [PostController::class, 'store'])->middleware('can:create,App\Models\Post')->name('posts.store');
 });
 
 require __DIR__.'/auth.php';
